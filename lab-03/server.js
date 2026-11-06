@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 
@@ -28,21 +29,36 @@ const initializeDBAndServer = async (port = process.env.PORT || 3000) => {
 
     const count = await db.get("SELECT COUNT(*) AS count FROM book;");
     if (count.count === 0) {
-      await db.run(`
-        INSERT INTO book (title, author, price, pages) VALUES
-        ('The Alchemist', 'Paulo Coelho', 399, 208),
-        ('Atomic Habits', 'James Clear', 499, 320),
-        ('To Kill a Mockingbird', 'Harper Lee', 450, 281),
-        ('1984', 'George Orwell', 350, 328),
-        ('The Great Gatsby', 'F. Scott Fitzgerald', 299, 180),
-        ('Pride and Prejudice', 'Jane Austen', 250, 279),
-        ('The Hobbit', 'J.R.R. Tolkien', 599, 310),
-        ('Rich Dad Poor Dad', 'Robert Kiyosaki', 420, 336),
-        ('Clean Code', 'Robert C. Martin', 850, 464),
-        ('The Pragmatic Programmer', 'Andrew Hunt', 799, 352),
-        ('Design Patterns', 'Erich Gamma', 920, 395),
-        ('Refactoring', 'Martin Fowler', 680, 448);
-      `);
+      const sampleFile = path.join(__dirname, "sample-books.json");
+      let booksToSeed = [];
+      if (fs.existsSync(sampleFile)) {
+        booksToSeed = JSON.parse(fs.readFileSync(sampleFile, "utf-8"));
+      } else {
+        booksToSeed = [
+          { title: "The Pragmatic Programmer", author: "David Thomas, Andrew Hunt", price: 750, pages: 352 },
+          { title: "Clean Code", author: "Robert C. Martin", price: 650, pages: 464 },
+          { title: "You Don't Know JS: Scope & Closures", author: "Kyle Simpson", price: 420, pages: 144 },
+          { title: "Designing Data-Intensive Applications", author: "Martin Kleppmann", price: 1200, pages: 616 },
+          { title: "JavaScript: The Good Parts", author: "Douglas Crockford", price: 380, pages: 176 },
+          { title: "Atomic Habits", author: "James Clear", price: 450, pages: 320 },
+          { title: "Node.js Design Patterns", author: "Mario Casciaro", price: 890, pages: 660 },
+          { title: "Learning SQL", author: "Alan Beaulieu", price: 550, pages: 380 },
+          { title: "Introduction to Algorithms", author: "Thomas H. Cormen", price: 1400, pages: 1312 },
+          { title: "Refactoring: Improving the Design of Existing Code", author: "Martin Fowler", price: 790, pages: 448 },
+          { title: "Cracking the Coding Interview", author: "Gayle Laakmann McDowell", price: 950, pages: 687 },
+          { title: "Head First Design Patterns", author: "Eric Freeman", price: 720, pages: 694 },
+          { title: "Eloquent JavaScript", author: "Marijn Haverbeke", price: 499, pages: 472 },
+          { title: "Clean Architecture", author: "Robert C. Martin", price: 680, pages: 432 },
+          { title: "Database System Concepts", author: "Abraham Silberschatz", price: 1150, pages: 1376 }
+        ];
+      }
+
+      for (const b of booksToSeed) {
+        await db.run(
+          "INSERT INTO book (title, author, price, pages) VALUES (?, ?, ?, ?);",
+          [b.title, b.author, b.price, b.pages]
+        );
+      }
     }
 
     const server = app.listen(port, () => {
@@ -69,6 +85,8 @@ if (require.main === module) {
 app.get("/", (req, res) => {
   res.json({
     message: "Lab 3 REST API is running",
+    student: "Ravella Lokesh (252U1R1217)",
+    section: "AIDE-2B"
   });
 });
 
@@ -87,7 +105,7 @@ app.get(["/books", "/books/"], async (req, res) => {
     const limitNum = parseInt(limit);
     const offsetNum = parseInt(offset);
 
-    if (isNaN(limitNum) || limitNum <= 0) {
+    if (isNaN(limitNum) || limitNum < 0) {
       return res.status(400).json({ message: "Invalid query parameter: 'limit' must be a positive integer" });
     }
 
@@ -173,7 +191,7 @@ app.get(["/books/:bookId", "/books/:bookId/"], async (req, res) => {
 
     const book = await db.get("SELECT * FROM book WHERE id = ?;", [id]);
     if (!book) {
-      return res.status(404).json({ message: "Book not found" });
+      return res.status(404).json({ message: `Book with ID ${id} not found` });
     }
 
     res.status(200).json(book);
@@ -231,7 +249,7 @@ app.put(["/books/:bookId", "/books/:bookId/"], async (req, res) => {
 
     const existing = await db.get("SELECT id FROM book WHERE id = ?;", [id]);
     if (!existing) {
-      return res.status(404).json({ message: "Book not found" });
+      return res.status(404).json({ message: `Book with ID ${id} not found` });
     }
 
     const { title, author, price, pages } = req.body;
@@ -278,7 +296,7 @@ app.delete(["/books/:bookId", "/books/:bookId/"], async (req, res) => {
 
     const existing = await db.get("SELECT id FROM book WHERE id = ?;", [id]);
     if (!existing) {
-      return res.status(404).json({ message: "Book not found" });
+      return res.status(404).json({ message: `Book with ID ${id} not found` });
     }
 
     await db.run("DELETE FROM book WHERE id = ?;", [id]);

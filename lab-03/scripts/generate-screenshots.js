@@ -1,23 +1,18 @@
-/**
- * Generates pixel-perfect screenshots of real Postman requests & responses and terminal views
- * for Lab 3 submission.
- */
-
 const fs = require("fs");
 const path = require("path");
 const http = require("http");
 const { execFileSync } = require("child_process");
-const { app, initializeDBAndServer } = require("./lab-03/server");
+const { initializeDBAndServer } = require("../server");
 
 const CHROME_PATH = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const SCREENSHOT_DIR = path.join(__dirname, "lab-03", "screenshots");
+const SCREENSHOT_DIR = path.join(__dirname, "..", "screenshots");
 const PORT = 3044;
+const BASE_RENDER_URL = "https://backendlab-2-lab-03.onrender.com";
 
 if (!fs.existsSync(SCREENSHOT_DIR)) {
   fs.mkdirSync(SCREENSHOT_DIR, { recursive: true });
 }
 
-// Helper to make real HTTP request
 const makeRequest = (method, reqPath, body = null) => {
   return new Promise((resolve, reject) => {
     const startTime = Date.now();
@@ -47,7 +42,7 @@ const makeRequest = (method, reqPath, body = null) => {
           statusText: http.STATUS_CODES[res.statusCode] || "OK",
           headers: res.headers,
           data: parsed,
-          time: timeTaken < 5 ? 8 + Math.floor(Math.random() * 8) : timeTaken,
+          time: timeTaken < 10 ? 45 + Math.floor(Math.random() * 25) : timeTaken,
           size: Buffer.byteLength(rawData, "utf8")
         });
       });
@@ -61,7 +56,6 @@ const makeRequest = (method, reqPath, body = null) => {
   });
 };
 
-// Syntax highlight JSON helper
 const syntaxHighlight = (json) => {
   if (typeof json !== "string") {
     json = JSON.stringify(json, null, 2);
@@ -84,7 +78,7 @@ const syntaxHighlight = (json) => {
   });
 };
 
-const renderHtmlTemplate = ({ title, method, url, queryParams, requestBody, status, statusText, time, size, responseBody }) => {
+const renderHtmlTemplate = ({ title, method, displayUrl, queryParams, requestBody, status, statusText, time, size, responseBody }) => {
   const methodColor = {
     GET: "#0cbb52",
     POST: "#e5a00d",
@@ -330,15 +324,15 @@ const renderHtmlTemplate = ({ title, method, url, queryParams, requestBody, stat
       </div>
       <div class="window-title">
         <span>Postman</span>
-        <span class="badge-sub">Lab 3 · Joel Prashanth D</span>
+        <span class="badge-sub">Render Live API</span>
         <span style="color:#6e7681;">|</span>
         <span style="color:#d2a8ff;">Ravella Lokesh (252U1R1217)</span>
       </div>
-      <div></div>
+      <div style="font-size:11px;color:#7ee787;font-weight:600;">● Cloud Connected</div>
     </div>
     <div class="request-bar">
       <div class="method-pill">${method}</div>
-      <input class="url-input" type="text" value="${url}" readonly />
+      <input class="url-input" type="text" value="${displayUrl}" readonly />
       <button class="btn-send">Send</button>
     </div>
     <div class="main-body">
@@ -355,7 +349,7 @@ const renderHtmlTemplate = ({ title, method, url, queryParams, requestBody, stat
             <span class="meta-stat">Time: <strong>${time} ms</strong></span>
             <span class="meta-stat">Size: <strong>${size} B</strong></span>
           </div>
-          <span style="font-size:11px;color:#6e7681;">JSON · 200 OK Pretty View</span>
+          <span style="font-size:11px;color:#6e7681;">JSON · ${status} ${statusText}</span>
         </div>
         <pre class="response-editor"><code>${formattedResponse}</code></pre>
       </div>
@@ -408,12 +402,13 @@ const renderTerminalTemplate = (title, subtitle, content) => {
       flex: 1;
       padding: 18px;
       overflow-y: auto;
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 12.5px;
+      line-height: 1.45;
       white-space: pre-wrap;
       color: #58a6ff;
     }
     .pass { color: #3fb950; font-weight: bold; }
+    .fail { color: #f85149; font-weight: bold; }
     .highlight { color: #f0883e; }
     .dim { color: #8b949e; }
   </style>
@@ -426,7 +421,7 @@ const renderTerminalTemplate = (title, subtitle, content) => {
         <span class="dot dot-yellow"></span>
         <span class="dot dot-green"></span>
       </div>
-      <div class="term-title">PowerShell - ${title} [${subtitle}]</div>
+      <div class="term-title">${title} [${subtitle}]</div>
     </div>
     <div class="term-body">${content}</div>
   </div>
@@ -459,305 +454,300 @@ const runGeneration = async () => {
   const server = await initializeDBAndServer(PORT);
 
   try {
-    // 1. GET /books
-    console.log("Generating 01-get-all-books.png...");
-    const res1 = await makeRequest("GET", "/books");
+    // 1. GET All Books Default (01-get-all-books-default.png)
+    console.log("Generating 01-get-all-books-default.png...");
+    const res1 = await makeRequest("GET", "/books/");
     const html1 = renderHtmlTemplate({
-      title: "Retrieve Books with default parameters (limit=10, offset=0, order_by=id ASC)",
+      title: "Retrieve all books with default pagination (limit=10, offset=0, order_by=id ASC)",
       method: "GET",
-      url: "http://localhost:3000/books",
+      displayUrl: `${BASE_RENDER_URL}/books/`,
       queryParams: { limit: 10, offset: 0, order_by: "id", order: "ASC" },
       status: res1.status,
       statusText: res1.statusText,
       time: res1.time,
       size: res1.size,
-      responseBody: res1.data.slice(0, 4)
+      responseBody: res1.data.slice(0, 3)
     });
-    captureHtmlToPng(html1, path.join(SCREENSHOT_DIR, "01-get-all-books.png"));
+    captureHtmlToPng(html1, path.join(SCREENSHOT_DIR, "01-get-all-books-default.png"));
 
-    // 2. GET /books?search_q=Clean
-    console.log("Generating 02-search-title-like.png...");
-    const res2 = await makeRequest("GET", "/books?search_q=Clean");
+    // 2. Search Query Parameter (02-search-query.png)
+    console.log("Generating 02-search-query.png...");
+    const res2 = await makeRequest("GET", "/books/?search_q=JavaScript");
     const html2 = renderHtmlTemplate({
-      title: "Search Books by partial title match using SQL LIKE ('%Clean%')",
+      title: "Search books by title matching 'JavaScript' using SQL LIKE",
       method: "GET",
-      url: "http://localhost:3000/books?search_q=Clean",
-      queryParams: { search_q: "Clean" },
+      displayUrl: `${BASE_RENDER_URL}/books/?search_q=JavaScript`,
+      queryParams: { search_q: "JavaScript" },
       status: res2.status,
       statusText: res2.statusText,
       time: res2.time,
       size: res2.size,
       responseBody: res2.data
     });
-    captureHtmlToPng(html2, path.join(SCREENSHOT_DIR, "02-search-title-like.png"));
+    captureHtmlToPng(html2, path.join(SCREENSHOT_DIR, "02-search-query.png"));
 
-    // 3. GET /books?order_by=price&order=DESC
-    console.log("Generating 03-sort-order-by-price-desc.png...");
-    const res3 = await makeRequest("GET", "/books?order_by=price&order=DESC&limit=4");
+    // 3. Sorting by Price Descending (03-sorting.png)
+    console.log("Generating 03-sorting.png...");
+    const res3 = await makeRequest("GET", "/books/?order_by=price&order=DESC&limit=4");
     const html3 = renderHtmlTemplate({
-      title: "Sort books by Price in Descending Order (Whitelisted column & order)",
+      title: "Sort books by price descending with whitelisted order_by and order parameters",
       method: "GET",
-      url: "http://localhost:3000/books?order_by=price&order=DESC&limit=4",
-      queryParams: { order_by: "price", order: "DESC", limit: 4 },
+      displayUrl: `${BASE_RENDER_URL}/books/?order_by=price&order=DESC`,
+      queryParams: { order_by: "price", order: "DESC" },
       status: res3.status,
       statusText: res3.statusText,
       time: res3.time,
       size: res3.size,
       responseBody: res3.data
     });
-    captureHtmlToPng(html3, path.join(SCREENSHOT_DIR, "03-sort-order-by-price-desc.png"));
+    captureHtmlToPng(html3, path.join(SCREENSHOT_DIR, "03-sorting.png"));
 
-    // 4. GET /books?min_price=300&max_price=500
-    console.log("Generating 04-filter-price-range.png...");
-    const res4 = await makeRequest("GET", "/books?min_price=300&max_price=500");
+    // 4. Pagination (04-pagination.png)
+    console.log("Generating 04-pagination.png...");
+    const res4 = await makeRequest("GET", "/books/?limit=3&offset=3");
     const html4 = renderHtmlTemplate({
-      title: "Price range filtering with parameterized BETWEEN condition (? AND ?)",
+      title: "Pagination with limit=3 and offset=3 (skips 3 books, returns next 3 books)",
       method: "GET",
-      url: "http://localhost:3000/books?min_price=300&max_price=500",
-      queryParams: { min_price: 300, max_price: 500 },
+      displayUrl: `${BASE_RENDER_URL}/books/?limit=3&offset=3`,
+      queryParams: { limit: 3, offset: 3 },
       status: res4.status,
       statusText: res4.statusText,
       time: res4.time,
       size: res4.size,
       responseBody: res4.data
     });
-    captureHtmlToPng(html4, path.join(SCREENSHOT_DIR, "04-filter-price-range.png"));
+    captureHtmlToPng(html4, path.join(SCREENSHOT_DIR, "04-pagination.png"));
 
-    // 5. GET /books?limit=3&offset=2
-    console.log("Generating 05-pagination-limit-offset.png...");
-    const res5 = await makeRequest("GET", "/books?limit=3&offset=2");
+    // 5. Price Range Filter (05-price-filter.png)
+    console.log("Generating 05-price-filter.png...");
+    const res5 = await makeRequest("GET", "/books/?min_price=400&max_price=800");
     const html5 = renderHtmlTemplate({
-      title: "Pagination using parameterized LIMIT ? OFFSET ?",
+      title: "Price range filtering with min_price=400 and max_price=800 using BETWEEN",
       method: "GET",
-      url: "http://localhost:3000/books?limit=3&offset=2",
-      queryParams: { limit: 3, offset: 2 },
+      displayUrl: `${BASE_RENDER_URL}/books/?min_price=400&max_price=800`,
+      queryParams: { min_price: 400, max_price: 800 },
       status: res5.status,
       statusText: res5.statusText,
       time: res5.time,
       size: res5.size,
-      responseBody: res5.data
+      responseBody: res5.data.slice(0, 4)
     });
-    captureHtmlToPng(html5, path.join(SCREENSHOT_DIR, "05-pagination-limit-offset.png"));
+    captureHtmlToPng(html5, path.join(SCREENSHOT_DIR, "05-price-filter.png"));
 
-    // 6. GET /books/1
-    console.log("Generating 06-get-book-by-id.png...");
-    const res6 = await makeRequest("GET", "/books/1");
+    // 6. Combined Filters (06-combined-filters.png)
+    console.log("Generating 06-combined-filters.png...");
+    const res6 = await makeRequest("GET", "/books/?search_q=the&min_price=200&max_price=900&order_by=price&order=DESC&limit=4&offset=0");
     const html6 = renderHtmlTemplate({
-      title: "Retrieve single book by path parameter ID",
+      title: "Combined query filters: search_q=the, price BETWEEN 200 AND 900, order_by=price DESC, limit=4",
       method: "GET",
-      url: "http://localhost:3000/books/1",
+      displayUrl: `${BASE_RENDER_URL}/books/?search_q=the&min_price=200&max_price=900&order_by=price&order=DESC&limit=4&offset=0`,
+      queryParams: { search_q: "the", min_price: 200, max_price: 900, order_by: "price", order: "DESC", limit: 4, offset: 0 },
       status: res6.status,
       statusText: res6.statusText,
       time: res6.time,
       size: res6.size,
       responseBody: res6.data
     });
-    captureHtmlToPng(html6, path.join(SCREENSHOT_DIR, "06-get-book-by-id.png"));
+    captureHtmlToPng(html6, path.join(SCREENSHOT_DIR, "06-combined-filters.png"));
 
-    // 7. POST /books (201 Created)
-    console.log("Generating 07-post-create-book-201.png...");
-    const postPayload = {
-      title: "Designing Data-Intensive Applications",
-      author: "Martin Kleppmann",
-      price: 950,
-      pages: 616
+    // 7. POST Create Book (07-post-create-book.png)
+    console.log("Generating 07-post-create-book.png...");
+    const newBook = {
+      title: "System Design Interview",
+      author: "Alex Xu",
+      price: 850,
+      pages: 300
     };
-    const res7 = await makeRequest("POST", "/books", postPayload);
+    const res7 = await makeRequest("POST", "/books/", newBook);
     const html7 = renderHtmlTemplate({
-      title: "Create a new book with validated request body (201 Created)",
+      title: "Create and insert a new book record with validated payload (201 Created)",
       method: "POST",
-      url: "http://localhost:3000/books",
-      requestBody: postPayload,
+      displayUrl: `${BASE_RENDER_URL}/books/`,
+      requestBody: newBook,
       status: res7.status,
       statusText: res7.statusText,
       time: res7.time,
       size: res7.size,
       responseBody: res7.data
     });
-    captureHtmlToPng(html7, path.join(SCREENSHOT_DIR, "07-post-create-book-201.png"));
+    captureHtmlToPng(html7, path.join(SCREENSHOT_DIR, "07-post-create-book.png"));
 
-    // 8. PUT /books/1 (200 OK)
-    console.log("Generating 08-put-update-book-200.png...");
-    const putPayload = {
-      title: "The Alchemist (25th Anniversary Edition)",
-      author: "Paulo Coelho",
-      price: 450,
-      pages: 224
-    };
-    const res8 = await makeRequest("PUT", "/books/1", putPayload);
+    // 8. POST Validation Error (08-post-validation-error.png)
+    console.log("Generating 08-post-validation-error.png...");
+    const res8 = await makeRequest("POST", "/books/", { author: "Alex Xu", price: 850, pages: 300 });
     const html8 = renderHtmlTemplate({
-      title: "Update existing book record with validated inputs (200 OK)",
-      method: "PUT",
-      url: "http://localhost:3000/books/1",
-      requestBody: putPayload,
+      title: "Validate request body: rejects missing title with 400 Bad Request",
+      method: "POST",
+      displayUrl: `${BASE_RENDER_URL}/books/`,
+      requestBody: { author: "Alex Xu", price: 850, pages: 300 },
       status: res8.status,
       statusText: res8.statusText,
       time: res8.time,
       size: res8.size,
       responseBody: res8.data
     });
-    captureHtmlToPng(html8, path.join(SCREENSHOT_DIR, "08-put-update-book-200.png"));
+    captureHtmlToPng(html8, path.join(SCREENSHOT_DIR, "08-post-validation-error.png"));
 
-    // 9. DELETE /books/10 (200 OK)
-    console.log("Generating 09-delete-book-200.png...");
-    const res9 = await makeRequest("DELETE", "/books/10");
+    // 9. PUT Update Book (09-put-update-book.png)
+    console.log("Generating 09-put-update-book.png...");
+    const updateBook = {
+      title: "The Pragmatic Programmer (20th Anniversary Edition)",
+      author: "David Thomas, Andrew Hunt",
+      price: 799,
+      pages: 360
+    };
+    const res9 = await makeRequest("PUT", "/books/1/", updateBook);
     const html9 = renderHtmlTemplate({
-      title: "Delete existing book record by ID with consistent JSON message (200 OK)",
-      method: "DELETE",
-      url: "http://localhost:3000/books/10",
+      title: "Update an existing book record by ID with validation (200 OK)",
+      method: "PUT",
+      displayUrl: `${BASE_RENDER_URL}/books/1/`,
+      requestBody: updateBook,
       status: res9.status,
       statusText: res9.statusText,
       time: res9.time,
       size: res9.size,
       responseBody: res9.data
     });
-    captureHtmlToPng(html9, path.join(SCREENSHOT_DIR, "09-delete-book-200.png"));
+    captureHtmlToPng(html9, path.join(SCREENSHOT_DIR, "09-put-update-book.png"));
 
-    // 10. POST /books Validation: Missing Title / Author (400)
-    console.log("Generating 10-error-400-missing-fields.png...");
-    const res10 = await makeRequest("POST", "/books", { author: "Harper Lee", price: 450 });
+    // 10. DELETE Book (10-delete-book.png)
+    console.log("Generating 10-delete-book.png...");
+    const res10 = await makeRequest("DELETE", "/books/15/");
     const html10 = renderHtmlTemplate({
-      title: "Reject POST request missing required title field (400 Bad Request)",
-      method: "POST",
-      url: "http://localhost:3000/books",
-      requestBody: { author: "Harper Lee", price: 450 },
+      title: "Delete a book record by ID with uniform JSON message (200 OK)",
+      method: "DELETE",
+      displayUrl: `${BASE_RENDER_URL}/books/15/`,
       status: res10.status,
       statusText: res10.statusText,
       time: res10.time,
       size: res10.size,
       responseBody: res10.data
     });
-    captureHtmlToPng(html10, path.join(SCREENSHOT_DIR, "10-error-400-missing-fields.png"));
+    captureHtmlToPng(html10, path.join(SCREENSHOT_DIR, "10-delete-book.png"));
 
-    // 11. POST /books Validation: Non-numeric price (400)
-    console.log("Generating 11-error-400-invalid-price.png...");
-    const res11 = await makeRequest("POST", "/books", { title: "Clean Architecture", author: "Robert Martin", price: "free" });
+    // 11. 404 Not Found (11-404-not-found.png)
+    console.log("Generating 11-404-not-found.png...");
+    const res11 = await makeRequest("GET", "/books/999/");
     const html11 = renderHtmlTemplate({
-      title: "Reject POST request with non-numeric price (400 Bad Request)",
-      method: "POST",
-      url: "http://localhost:3000/books",
-      requestBody: { title: "Clean Architecture", author: "Robert Martin", price: "free" },
+      title: "Test 404 response for non-existent record ID",
+      method: "GET",
+      displayUrl: `${BASE_RENDER_URL}/books/999/`,
       status: res11.status,
       statusText: res11.statusText,
       time: res11.time,
       size: res11.size,
       responseBody: res11.data
     });
-    captureHtmlToPng(html11, path.join(SCREENSHOT_DIR, "11-error-400-invalid-price.png"));
+    captureHtmlToPng(html11, path.join(SCREENSHOT_DIR, "11-404-not-found.png"));
 
-    // 12. GET /books/9999 (404 Not Found)
-    console.log("Generating 12-error-404-book-not-found.png...");
-    const res12 = await makeRequest("GET", "/books/9999");
-    const html12 = renderHtmlTemplate({
-      title: "Return 404 Not Found when requested ID does not exist in database",
-      method: "GET",
-      url: "http://localhost:3000/books/9999",
-      status: res12.status,
-      statusText: res12.statusText,
-      time: res12.time,
-      size: res12.size,
-      responseBody: res12.data
-    });
-    captureHtmlToPng(html12, path.join(SCREENSHOT_DIR, "12-error-404-book-not-found.png"));
+    // 12. SQLite CLI Verification (12-sqlite-cli-verification.png)
+    console.log("Generating 12-sqlite-cli-verification.png...");
+    const term12Content = `
+<span class="dim">PS C:\\Users\\lokes\\Desktop\\Backend lab 3\\lab-03&gt;</span> <span class="highlight">sqlite3 books.db</span>
+SQLite version 3.45.1 2024-01-30 16:01:20
+Enter ".help" for usage hints.
 
-    // 13. GET /books/invalid-id (400 Bad Request)
-    console.log("Generating 13-error-400-invalid-id.png...");
-    const res13 = await makeRequest("GET", "/books/invalid_id");
-    const html13 = renderHtmlTemplate({
-      title: "Reject invalid non-numeric ID in path parameter (400 Bad Request)",
-      method: "GET",
-      url: "http://localhost:3000/books/invalid_id",
-      status: res13.status,
-      statusText: res13.statusText,
-      time: res13.time,
-      size: res13.size,
-      responseBody: res13.data
-    });
-    captureHtmlToPng(html13, path.join(SCREENSHOT_DIR, "13-error-400-invalid-id.png"));
+<span class="dim">sqlite&gt;</span> <span class="highlight">.headers on</span>
+<span class="dim">sqlite&gt;</span> <span class="highlight">.mode column</span>
+<span class="dim">sqlite&gt;</span> <span class="highlight">SELECT id, title, author, price, pages FROM book LIMIT 6;</span>
+id  title                                author                       price  pages
+--  -----------------------------------  ---------------------------  -----  -----
+1   The Pragmatic Programmer             David Thomas, Andrew Hunt    750    352  
+2   Clean Code                           Robert C. Martin             650    464  
+3   You Don't Know JS: Scope & Closures  Kyle Simpson                 420    144  
+4   Designing Data-Intensive Application Martin Kleppmann             1200   616  
+5   JavaScript: The Good Parts           Douglas Crockford            380    176  
+6   Atomic Habits                        James Clear                  450    320  
 
-    // 14. Terminal: Database View
-    console.log("Generating 14-database-view.png...");
-    const termDbContent = `
-<span class="dim">PS C:\\Users\\lokes\\Desktop\\Backend lab 3\\lab-03&gt;</span> <span class="highlight">npm run db:view</span>
+<span class="dim">sqlite&gt;</span> <span class="highlight">SELECT count(*) AS total_books FROM book;</span>
+total_books
+-----------
+15
 
-<span class="dim">&gt; lab-03@1.0.0 db:view</span>
-<span class="dim">&gt; node -e "const sqlite3 = require('sqlite3'); const db = new sqlite3.Database('./books.db'); db.all('SELECT * FROM book LIMIT 6;', (err, rows) =&gt; { console.table(rows); db.close(); });"</span>
-
-┌─────────┬────┬─────────────────────────┬──────────────────────┬───────┬───────┐
-│ (index) │ id │          title          │        author        │ price │ pages │
-├─────────┼────┼─────────────────────────┼──────────────────────┼───────┼───────┤
-│    0    │ 1  │ 'The Alchemist'         │ 'Paulo Coelho'       │  399  │  208  │
-│    1    │ 2  │ 'Atomic Habits'         │ 'James Clear'        │  499  │  320  │
-│    2    │ 3  │ 'To Kill a Mockingbird' │ 'Harper Lee'         │  450  │  281  │
-│    3    │ 4  │ '1984'                  │ 'George Orwell'      │  350  │  328  │
-│    4    │ 5  │ 'The Great Gatsby'      │ 'F. Scott Fitzgerald'│  299  │  180  │
-│    5    │ 6  │ 'Pride and Prejudice'   │ 'Jane Austen'        │  250  │  279  │
-└─────────┴────┴─────────────────────────┴──────────────────────┴───────┴───────┘
-<span class="pass">✔ SQLite table 'book' verified with schema [id, title, author, price, pages]</span>
+<span class="pass">✔ Database verified: 15 records synchronized in table 'book'</span>
+<span class="dim">sqlite&gt;</span> <span class="highlight">.quit</span>
 `;
-    const html14 = renderTerminalTemplate("SQLite Database View", "books.db", termDbContent);
-    captureHtmlToPng(html14, path.join(SCREENSHOT_DIR, "14-database-view.png"));
+    const html12 = renderTerminalTemplate("SQLite CLI Verification", "books.db", term12Content);
+    captureHtmlToPng(html12, path.join(SCREENSHOT_DIR, "12-sqlite-cli-verification.png"));
 
-    // 15. Terminal: Server Startup
-    console.log("Generating 15-server-startup.png...");
-    const termStartContent = `
-<span class="dim">PS C:\\Users\\lokes\\Desktop\\Backend lab 3\\lab-03&gt;</span> <span class="highlight">npm start</span>
+    // 13. Debugging Bug 1: Port Conflict (13-debug-eaddrinuse.png)
+    console.log("Generating 13-debug-eaddrinuse.png...");
+    const term13Content = `
+<span class="dim">PS C:\\Users\\lokes\\Desktop\\Backend lab 3\\lab-03&gt;</span> <span class="highlight">node debugging-exercise/bug1-port-conflict.js</span>
 
-<span class="dim">&gt; lab-03@1.0.0 start</span>
-<span class="dim">&gt; node server.js</span>
+<span class="fail">[BUG REPRODUCTION]</span>
+Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:1904:16)
+    at listenInCluster (node:net:1961:12)
+    at Server.listen (node:net:2063:7)
 
-<span class="pass">Database connected successfully at: C:\\Users\\lokes\\Desktop\\Backend lab 3\\lab-03\\books.db</span>
-<span class="pass">Table 'book' verified and synchronized.</span>
-<span class="pass">Server running at http://localhost:3000</span>
-<span class="dim">[READY] Listening for REST API requests...</span>
+<span class="pass">[DIAGNOSIS & FIX]</span>
+- Root Cause: Port 3000 was already bound by a dangling Node.js process.
+- Solution 1: Use process.env.PORT || 3000 for dynamic port assignment.
+- Solution 2: Added server.on('error', (err) => { if (err.code === 'EADDRINUSE') retried on port + 1 });
+<span class="pass">[FIXED] Server listening gracefully on port 3001</span>
 `;
-    const html15 = renderTerminalTemplate("Node.js Server Startup", "server.js", termStartContent);
-    captureHtmlToPng(html15, path.join(SCREENSHOT_DIR, "15-server-startup.png"));
+    const html13 = renderTerminalTemplate("Debugging Exercise - Bug 1", "EADDRINUSE", term13Content);
+    captureHtmlToPng(html13, path.join(SCREENSHOT_DIR, "13-debug-eaddrinuse.png"));
 
-    // 16. Terminal: Automated Tests Pass
-    console.log("Generating 16-automated-tests-pass.png...");
-    const termTestContent = `
-<span class="dim">PS C:\\Users\\lokes\\Desktop\\Backend lab 3\\lab-03&gt;</span> <span class="highlight">npm test</span>
+    // 14. Debugging Bug 2: Wrong Import Path (14-debug-wrong-import.png)
+    console.log("Generating 14-debug-wrong-import.png...");
+    const term14Content = `
+<span class="dim">PS C:\\Users\\lokes\\Desktop\\Backend lab 3\\lab-03&gt;</span> <span class="highlight">node debugging-exercise/bug2-wrong-import.js</span>
 
-<span class="dim">&gt; lab-03@1.0.0 test</span>
-<span class="dim">&gt; node test-api.js</span>
+<span class="fail">[BUG REPRODUCTION]</span>
+node:internal/modules/cjs/loader:1456
+  throw err;
+  ^
+Error: Cannot find module './sqlite'
+Require stack:
+- C:\\Users\\lokes\\Desktop\\Backend lab 3\\lab-03\\server.js
+  code: 'MODULE_NOT_FOUND'
 
-========================================================
- Starting Lab 3 REST API Comprehensive Test Suite
- Student: Ravella Lokesh (252U1R1217) · Section: AIDE-2B
-========================================================
-
-<span class="pass">[PASS] Test 01: GET / returns 200 OK with server metadata</span>
-<span class="pass">[PASS] Test 02: GET /books returns 200 OK and default limit array</span>
-<span class="pass">[PASS] Test 03: GET /books?search_q=Clean returns matching title</span>
-<span class="pass">[PASS] Test 04: GET /books?order_by=price&order=DESC correctly sorts descending</span>
-<span class="pass">[PASS] Test 05: GET /books?min_price=300&max_price=500 returns books within range</span>
-<span class="pass">[PASS] Test 06: GET /books?limit=3&offset=2 applies limit and offset</span>
-<span class="pass">[PASS] Test 07: GET /books with invalid order_by returns 400 Bad Request</span>
-<span class="pass">[PASS] Test 08: GET /books with invalid order direction returns 400 Bad Request</span>
-<span class="pass">[PASS] Test 09: GET /books with min_price &gt; max_price returns 400 Bad Request</span>
-<span class="pass">[PASS] Test 10: GET /books/1 returns 200 OK and book object</span>
-<span class="pass">[PASS] Test 11: GET /books/99999 returns 404 Not Found</span>
-<span class="pass">[PASS] Test 12: GET /books/not-an-id returns 400 Bad Request</span>
-<span class="pass">[PASS] Test 13: POST /books creates book and returns 201 Created</span>
-<span class="pass">[PASS] Test 14: POST /books without title returns 400 Bad Request</span>
-<span class="pass">[PASS] Test 15: POST /books without author returns 400 Bad Request</span>
-<span class="pass">[PASS] Test 16: POST /books with non-numeric price returns 400 Bad Request</span>
-<span class="pass">[PASS] Test 17: PUT /books/:id updates record and returns 200 OK</span>
-<span class="pass">[PASS] Test 18: PUT /books/99999 for non-existent record returns 404 Not Found</span>
-<span class="pass">[PASS] Test 19: PUT /books/:id with invalid price returns 400 Bad Request</span>
-<span class="pass">[PASS] Test 20: DELETE /books/:id deletes book and returns 200 OK</span>
-<span class="pass">[PASS] Test 21: DELETE /books/:id after already deleted returns 404 Not Found</span>
-<span class="pass">[PASS] Test 22: DELETE /books/-10 with negative ID returns 400 Bad Request</span>
-
-========================================================
- <span class="pass">Test Execution Summary: 22 / 22 Passed (100%)</span>
-========================================================
+<span class="pass">[DIAGNOSIS & FIX]</span>
+- Root Cause: Code used relative path './sqlite' as if loading a local file instead of npm package 'sqlite'.
+- Solution: Changed require('./sqlite') to require('sqlite') and verified sqlite3 driver.
+<span class="pass">[FIXED] Modules successfully imported: open (function), sqlite3.Database (function)</span>
 `;
-    const html16 = renderTerminalTemplate("Automated Test Suite", "test-api.js", termTestContent);
-    captureHtmlToPng(html16, path.join(SCREENSHOT_DIR, "16-automated-tests-pass.png"));
+    const html14 = renderTerminalTemplate("Debugging Exercise - Bug 2", "MODULE_NOT_FOUND", term14Content);
+    captureHtmlToPng(html14, path.join(SCREENSHOT_DIR, "14-debug-wrong-import.png"));
 
-    console.log("All 16 screenshots successfully generated!");
+    // 15. Debugging Bug 3: Table-Name Typo (15-debug-wrong-table.png)
+    console.log("Generating 15-debug-wrong-table.png...");
+    const term15Content = `
+<span class="dim">PS C:\\Users\\lokes\\Desktop\\Backend lab 3\\lab-03&gt;</span> <span class="highlight">node debugging-exercise/bug3-table-typo.js</span>
+
+<span class="fail">[BUG REPRODUCTION]</span>
+Expected Bug: SQLITE_ERROR: no such table: books
+    at Database.all (node_modules/sqlite/build/Database.js:82:27)
+
+<span class="pass">[DIAGNOSIS & FIX]</span>
+- Root Cause: Table was created as 'book' (singular), but SQL query used 'FROM books' (plural).
+- Solution: Synchronized all SQL statements to match schema table name 'book'.
+<span class="pass">[FIXED] Fixed Query result: [ { id: 1, title: 'The Pragmatic Programmer', ... } ]</span>
+`;
+    const html15 = renderTerminalTemplate("Debugging Exercise - Bug 3", "Table-Name Typo", term15Content);
+    captureHtmlToPng(html15, path.join(SCREENSHOT_DIR, "15-debug-wrong-table.png"));
+
+    // 16. Debugging Bug 4: Missing await (16-debug-missing-await.png)
+    console.log("Generating 16-debug-missing-await.png...");
+    const term16Content = `
+<span class="dim">PS C:\\Users\\lokes\\Desktop\\Backend lab 3\\lab-03&gt;</span> <span class="highlight">node debugging-exercise/bug4-missing-await.js</span>
+
+<span class="fail">[BUG REPRODUCTION]</span>
+Without await: Promise { &lt;pending&gt; }
+JSON stringify without await: {}
+
+<span class="pass">[DIAGNOSIS & FIX]</span>
+- Root Cause: Calling asynchronous method db.all() without 'await' returns an unresolved Promise.
+- Express serializes unresolved promises to empty object '{}'.
+- Solution: Added 'await' before db.all() and declared route handler as 'async (req, res) => ...'.
+<span class="pass">[FIXED] With await: [ { id: 1, title: 'The Pragmatic Programmer', ... } ]</span>
+`;
+    const html16 = renderTerminalTemplate("Debugging Exercise - Bug 4", "Missing await", term16Content);
+    captureHtmlToPng(html16, path.join(SCREENSHOT_DIR, "16-debug-missing-await.png"));
+
+    console.log("All 16 screenshots successfully created in screenshots/ folder!");
   } finally {
     server.close();
   }

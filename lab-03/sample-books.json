@@ -1,15 +1,17 @@
 [
-  { "title": "The Alchemist", "author": "Paulo Coelho", "price": 399, "pages": 208 },
-  { "title": "Atomic Habits", "author": "James Clear", "price": 499, "pages": 320 },
-  { "title": "To Kill a Mockingbird", "author": "Harper Lee", "price": 450, "pages": 281 },
-  { "title": "1984", "author": "George Orwell", "price": 350, "pages": 328 },
-  { "title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "price": 299, "pages": 180 },
-  { "title": "Pride and Prejudice", "author": "Jane Austen", "price": 250, "pages": 279 },
-  { "title": "The Hobbit", "author": "J.R.R. Tolkien", "price": 599, "pages": 310 },
-  { "title": "Rich Dad Poor Dad", "author": "Robert Kiyosaki", "price": 420, "pages": 336 },
-  { "title": "Clean Code", "author": "Robert C. Martin", "price": 850, "pages": 464 },
-  { "title": "The Pragmatic Programmer", "author": "Andrew Hunt", "price": 799, "pages": 352 },
-  { "title": "Design Patterns", "author": "Erich Gamma", "price": 920, "pages": 395 },
-  { "title": "Refactoring", "author": "Martin Fowler", "price": 680, "pages": 448 }
+  { "title": "The Pragmatic Programmer", "author": "David Thomas, Andrew Hunt", "price": 750, "pages": 352 },
+  { "title": "Clean Code", "author": "Robert C. Martin", "price": 650, "pages": 464 },
+  { "title": "You Don't Know JS: Scope & Closures", "author": "Kyle Simpson", "price": 420, "pages": 144 },
+  { "title": "Designing Data-Intensive Applications", "author": "Martin Kleppmann", "price": 1200, "pages": 616 },
+  { "title": "JavaScript: The Good Parts", "author": "Douglas Crockford", "price": 380, "pages": 176 },
+  { "title": "Atomic Habits", "author": "James Clear", "price": 450, "pages": 320 },
+  { "title": "Node.js Design Patterns", "author": "Mario Casciaro", "price": 890, "pages": 660 },
+  { "title": "Learning SQL", "author": "Alan Beaulieu", "price": 550, "pages": 380 },
+  { "title": "Introduction to Algorithms", "author": "Thomas H. Cormen", "price": 1400, "pages": 1312 },
+  { "title": "Refactoring: Improving the Design of Existing Code", "author": "Martin Fowler", "price": 790, "pages": 448 },
+  { "title": "Cracking the Coding Interview", "author": "Gayle Laakmann McDowell", "price": 950, "pages": 687 },
+  { "title": "Head First Design Patterns", "author": "Eric Freeman", "price": 720, "pages": 694 },
+  { "title": "Eloquent JavaScript", "author": "Marijn Haverbeke", "price": 499, "pages": 472 },
+  { "title": "Clean Architecture", "author": "Robert C. Martin", "price": 680, "pages": 432 },
+  { "title": "Database System Concepts", "author": "Abraham Silberschatz", "price": 1150, "pages": 1376 }
 ]
-
