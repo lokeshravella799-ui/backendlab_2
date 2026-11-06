@@ -1,0 +1,15 @@
+[
+  { "title": "The Alchemist", "author": "Paulo Coelho", "price": 399, "pages": 208 },
+  { "title": "Atomic Habits", "author": "James Clear", "price": 499, "pages": 320 },
+  { "title": "To Kill a Mockingbird", "author": "Harper Lee", "price": 450, "pages": 281 },
+  { "title": "1984", "author": "George Orwell", "price": 350, "pages": 328 },
+  { "title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "price": 299, "pages": 180 },
+  { "title": "Pride and Prejudice", "author": "Jane Austen", "price": 250, "pages": 279 },
+  { "title": "The Hobbit", "author": "J.R.R. Tolkien", "price": 599, "pages": 310 },
+  { "title": "Rich Dad Poor Dad", "author": "Robert Kiyosaki", "price": 420, "pages": 336 },
+  { "title": "Clean Code", "author": "Robert C. Martin", "price": 850, "pages": 464 },
+  { "title": "The Pragmatic Programmer", "author": "Andrew Hunt", "price": 799, "pages": 352 },
+  { "title": "Design Patterns", "author": "Erich Gamma", "price": 920, "pages": 395 },
+  { "title": "Refactoring", "author": "Martin Fowler", "price": 680, "pages": 448 }
+]
+

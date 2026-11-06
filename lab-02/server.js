@@ -1,5 +1,5 @@
 // Lab 2: SQLite Database and CRUD Routes
-// Student: THOTA SHASHANK
+// Student: Ravella Lokesh
 
 const express = require("express");
 const path = require("path");
@@ -137,13 +137,22 @@ app.post("/books/", async (req, res) => {
 
     // Validate request body
     if (
-      !title || typeof title !== "string" || title.trim() === "" ||
-      !author || typeof author !== "string" || author.trim() === "" ||
-      price === undefined || isNaN(price) || Number(price) < 0 ||
-      pages === undefined || isNaN(pages) || Number(pages) <= 0
+      !title ||
+      typeof title !== "string" ||
+      title.trim() === "" ||
+      !author ||
+      typeof author !== "string" ||
+      author.trim() === "" ||
+      price === undefined ||
+      isNaN(price) ||
+      Number(price) < 0 ||
+      pages === undefined ||
+      isNaN(pages) ||
+      Number(pages) <= 0
     ) {
       return res.status(400).json({
-        error: "Invalid request data. Please provide valid title, author, price, and pages.",
+        error:
+          "Invalid request data. Please provide valid title, author, price, and pages.",
       });
     }
 
@@ -195,13 +204,22 @@ app.put("/books/:bookId/", async (req, res) => {
 
     // Validate request body
     if (
-      !title || typeof title !== "string" || title.trim() === "" ||
-      !author || typeof author !== "string" || author.trim() === "" ||
-      price === undefined || isNaN(price) || Number(price) < 0 ||
-      pages === undefined || isNaN(pages) || Number(pages) <= 0
+      !title ||
+      typeof title !== "string" ||
+      title.trim() === "" ||
+      !author ||
+      typeof author !== "string" ||
+      author.trim() === "" ||
+      price === undefined ||
+      isNaN(price) ||
+      Number(price) < 0 ||
+      pages === undefined ||
+      isNaN(pages) ||
+      Number(pages) <= 0
     ) {
       return res.status(400).json({
-        error: "Invalid request data. Please provide valid title, author, price, and pages.",
+        error:
+          "Invalid request data. Please provide valid title, author, price, and pages.",
       });
     }
 
