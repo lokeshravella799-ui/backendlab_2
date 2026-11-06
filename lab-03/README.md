@@ -405,63 +405,67 @@ SELECT id, title FROM book WHERE id = 15;
 - **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/](https://backendlab-2-lab-03.onrender.com/books/)
 - **Expected HTTP Status:** `200 OK`
 
-![GET All Books Default](screenshots/01-get-all-books-default.png)
+[![GET All Books Default](screenshots/01-get-all-books-default.png)](https://backendlab-2-lab-03.onrender.com/books/)
 
 ### 2. Search Query Parameter (GET /books/?search_q=JavaScript)
 - **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/?search_q=JavaScript](https://backendlab-2-lab-03.onrender.com/books/?search_q=JavaScript)
 - **Expected HTTP Status:** `200 OK`
 
-![Search Query](screenshots/02-search-query.png)
+[![Search Query](screenshots/02-search-query.png)](https://backendlab-2-lab-03.onrender.com/books/?search_q=JavaScript)
 
 ### 3. Sorting by Price Descending (GET /books/?order_by=price&order=DESC)
 - **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/?order_by=price&order=DESC](https://backendlab-2-lab-03.onrender.com/books/?order_by=price&order=DESC)
 - **Expected HTTP Status:** `200 OK`
 
-![Sorting by Price Descending](screenshots/03-sorting.png)
+[![Sorting by Price Descending](screenshots/03-sorting.png)](https://backendlab-2-lab-03.onrender.com/books/?order_by=price&order=DESC)
 
 ### 4. Pagination (GET /books/?limit=3&offset=3)
 - **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/?limit=3&offset=3](https://backendlab-2-lab-03.onrender.com/books/?limit=3&offset=3)
 - **Expected HTTP Status:** `200 OK`
 
-![Pagination](screenshots/04-pagination.png)
+[![Pagination](screenshots/04-pagination.png)](https://backendlab-2-lab-03.onrender.com/books/?limit=3&offset=3)
 
 ### 5. Price Range Filter (GET /books/?min_price=400&max_price=800)
 - **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/?min_price=400&max_price=800](https://backendlab-2-lab-03.onrender.com/books/?min_price=400&max_price=800)
 - **Expected HTTP Status:** `200 OK`
 
-![Price Range Filter](screenshots/05-price-filter.png)
+[![Price Range Filter](screenshots/05-price-filter.png)](https://backendlab-2-lab-03.onrender.com/books/?min_price=400&max_price=800)
 
 ### 6. Combined Query Filters
 - **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/?search_q=the&min_price=200&max_price=900&order_by=price&order=DESC&limit=4&offset=0](https://backendlab-2-lab-03.onrender.com/books/?search_q=the&min_price=200&max_price=900&order_by=price&order=DESC&limit=4&offset=0)
 - **Expected HTTP Status:** `200 OK`
 
-![Combined Filters](screenshots/06-combined-filters.png)
+[![Combined Filters](screenshots/06-combined-filters.png)](https://backendlab-2-lab-03.onrender.com/books/?search_q=the&min_price=200&max_price=900&order_by=price&order=DESC&limit=4&offset=0)
 
 ### 7. POST Create Book (201 Created)
+- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/](https://backendlab-2-lab-03.onrender.com/books/)
 - **Expected HTTP Status:** `201 Created`
 
-![POST Create Book](screenshots/07-post-create-book.png)
+[![POST Create Book](screenshots/07-post-create-book.png)](https://backendlab-2-lab-03.onrender.com/books/)
 
 ### 8. POST Validation Error (400 Bad Request)
+- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/](https://backendlab-2-lab-03.onrender.com/books/)
 - **Expected HTTP Status:** `400 Bad Request`
 
-![POST Validation Error](screenshots/08-post-validation-error.png)
+[![POST Validation Error](screenshots/08-post-validation-error.png)](https://backendlab-2-lab-03.onrender.com/books/)
 
 ### 9. PUT Update Book (200 OK)
+- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/1/](https://backendlab-2-lab-03.onrender.com/books/1/)
 - **Expected HTTP Status:** `200 OK`
 
-![PUT Update Book](screenshots/09-put-update-book.png)
+[![PUT Update Book](screenshots/09-put-update-book.png)](https://backendlab-2-lab-03.onrender.com/books/1/)
 
 ### 10. DELETE Book (200 OK)
+- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/15/](https://backendlab-2-lab-03.onrender.com/books/15/)
 - **Expected HTTP Status:** `200 OK`
 
-![DELETE Book](screenshots/10-delete-book.png)
+[![DELETE Book](screenshots/10-delete-book.png)](https://backendlab-2-lab-03.onrender.com/books/15/)
 
 ### 11. 404 Not Found for Non-Existent ID
 - **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/books/999/](https://backendlab-2-lab-03.onrender.com/books/999/)
 - **Expected HTTP Status:** `404 Not Found`
 
-![404 Not Found](screenshots/11-404-not-found.png)
+[![404 Not Found](screenshots/11-404-not-found.png)](https://backendlab-2-lab-03.onrender.com/books/999/)
 
 ### 12. SQLite CLI Verification (Formatted Columns Before & After)
 ![SQLite CLI Verification](screenshots/12-sqlite-cli-verification.png)
