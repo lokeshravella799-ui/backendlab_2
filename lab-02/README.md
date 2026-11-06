@@ -1,8 +1,8 @@
 # Lab 2: SQLite Database and CRUD Routes
 
-**Name:** Lokesh
-**Registration Number:** [PLACEHOLDER - I WILL ENTER IT]  
-**Section:** [PLACEHOLDER - I WILL ENTER IT]  
+**Name:** Ravella Lokesh  
+**Registration Number:** 252U1R1217  
+**Section:** AIDE-2B  
 
 **Live Link:**  
 [ADD AFTER DEPLOYMENT]
