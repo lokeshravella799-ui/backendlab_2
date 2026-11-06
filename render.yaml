@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: backendlab-2-lab-03
+    runtime: node
+    buildCommand: npm install
+    startCommand: node lab-03/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
