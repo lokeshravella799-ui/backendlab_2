@@ -131,10 +131,10 @@ const shots = [
   {
     filename: "01-register-success.png",
     title: "1. POST Register — New User (200 OK)",
-    renderUrl: "https://backendlab-2-lab-04.onrender.com/register/",
+    renderUrl: "https://backendlab-2-lab-03.onrender.com/register/",
     expectedStatus: "200 OK",
     method: "POST",
-    url: "https://backendlab-2-lab-04.onrender.com/register/",
+    url: "https://backendlab-2-lab-03.onrender.com/register/",
     requestContext: "Register a new user by sending username, name and password in JSON body",
     requestBody: `{
   "username": "ravella_lokesh",
@@ -152,10 +152,10 @@ ${G("}")}`
   {
     filename: "02-register-duplicate.png",
     title: "2. POST Register — Duplicate Username (400 Bad Request)",
-    renderUrl: "https://backendlab-2-lab-04.onrender.com/register/",
+    renderUrl: "https://backendlab-2-lab-03.onrender.com/register/",
     expectedStatus: "400 Bad Request",
     method: "POST",
-    url: "https://backendlab-2-lab-04.onrender.com/register/",
+    url: "https://backendlab-2-lab-03.onrender.com/register/",
     requestContext: "Try to register the same username again — should return 400 User already exists",
     requestBody: `{
   "username": "ravella_lokesh",
@@ -173,10 +173,10 @@ ${G("}")}`
   {
     filename: "03-register-missing-fields.png",
     title: "3. POST Register — Missing Password (400 Bad Request)",
-    renderUrl: "https://backendlab-2-lab-04.onrender.com/register/",
+    renderUrl: "https://backendlab-2-lab-03.onrender.com/register/",
     expectedStatus: "400 Bad Request",
     method: "POST",
-    url: "https://backendlab-2-lab-04.onrender.com/register/",
+    url: "https://backendlab-2-lab-03.onrender.com/register/",
     requestContext: "Send registration body without password field to trigger 400 validation error",
     requestBody: `{
   "username": "new_user",
@@ -193,10 +193,10 @@ ${G("}")}`
   {
     filename: "04-register-short-password.png",
     title: "4. POST Register — Short Password (400 Bad Request)",
-    renderUrl: "https://backendlab-2-lab-04.onrender.com/register/",
+    renderUrl: "https://backendlab-2-lab-03.onrender.com/register/",
     expectedStatus: "400 Bad Request",
     method: "POST",
-    url: "https://backendlab-2-lab-04.onrender.com/register/",
+    url: "https://backendlab-2-lab-03.onrender.com/register/",
     requestContext: "Send password shorter than 6 characters — should return 400 validation error",
     requestBody: `{
   "username": "test_user",
@@ -214,10 +214,10 @@ ${G("}")}`
   {
     filename: "05-login-success.png",
     title: "5. POST Login — Valid Credentials (200 OK + JWT Token)",
-    renderUrl: "https://backendlab-2-lab-04.onrender.com/login/",
+    renderUrl: "https://backendlab-2-lab-03.onrender.com/login/",
     expectedStatus: "200 OK",
     method: "POST",
-    url: "https://backendlab-2-lab-04.onrender.com/login/",
+    url: "https://backendlab-2-lab-03.onrender.com/login/",
     requestContext: "Login with correct username and password — returns a signed JWT token",
     requestBody: `{
   "username": "ravella_lokesh",
@@ -234,10 +234,10 @@ ${G("}")}`
   {
     filename: "07-login-invalid-user.png",
     title: "7. POST Login — Invalid Username (400 Bad Request)",
-    renderUrl: "https://backendlab-2-lab-04.onrender.com/login/",
+    renderUrl: "https://backendlab-2-lab-03.onrender.com/login/",
     expectedStatus: "400 Bad Request",
     method: "POST",
-    url: "https://backendlab-2-lab-04.onrender.com/login/",
+    url: "https://backendlab-2-lab-03.onrender.com/login/",
     requestContext: "Login with a username that does not exist in the database",
     requestBody: `{
   "username": "unknown_user",
@@ -254,10 +254,10 @@ ${G("}")}`
   {
     filename: "08-login-wrong-password.png",
     title: "8. POST Login — Wrong Password (400 Bad Request)",
-    renderUrl: "https://backendlab-2-lab-04.onrender.com/login/",
+    renderUrl: "https://backendlab-2-lab-03.onrender.com/login/",
     expectedStatus: "400 Bad Request",
     method: "POST",
-    url: "https://backendlab-2-lab-04.onrender.com/login/",
+    url: "https://backendlab-2-lab-03.onrender.com/login/",
     requestContext: "Login with correct username but wrong password — bcrypt.compare returns false",
     requestBody: `{
   "username": "ravella_lokesh",

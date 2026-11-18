@@ -3,12 +3,15 @@ const path = require("path");
 const fs = require("fs");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 app.use(express.json());
 
 const dbPath = path.join(__dirname, "books.db");
 let db = null;
+const JWT_SECRET = "my_secret_key_lab4";
 
 const initializeDBAndServer = async (port = process.env.PORT || 8000) => {
   try {
@@ -25,7 +28,33 @@ const initializeDBAndServer = async (port = process.env.PORT || 8000) => {
         price INTEGER NOT NULL,
         pages INTEGER NOT NULL
       );
+      CREATE TABLE IF NOT EXISTS user (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL UNIQUE,
+        name TEXT NOT NULL,
+        password TEXT NOT NULL
+      );
     `);
+
+    const userCount = await db.get("SELECT COUNT(*) AS count FROM user;");
+    if (userCount.count === 0) {
+      const sampleUserFile = path.join(__dirname, "sample-users.json");
+      let usersToSeed = [];
+      if (fs.existsSync(sampleUserFile)) {
+        usersToSeed = JSON.parse(fs.readFileSync(sampleUserFile, "utf-8"));
+      } else {
+        usersToSeed = [
+          { username: "ravella_lokesh", name: "Ravella Lokesh", password: "lokesh@password123" }
+        ];
+      }
+      for (const u of usersToSeed) {
+        const hashed = await bcrypt.hash(u.password, 10);
+        await db.run(
+          "INSERT INTO user (username, name, password) VALUES (?, ?, ?);",
+          [u.username, u.name, hashed]
+        );
+      }
+    }
 
     const count = await db.get("SELECT COUNT(*) AS count FROM book;");
     if (count.count === 0) {
@@ -298,6 +327,87 @@ app.delete(["/books/:bookId", "/books/:bookId/"], async (req, res) => {
 
     await db.run("DELETE FROM book WHERE id = ?;", [id]);
     res.status(200).json({ message: "Book deleted successfully" });
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+app.get(["/users", "/users/"], async (req, res) => {
+  try {
+    const users = await db.all("SELECT id, username, name FROM user;");
+    res.json(users);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+app.all(["/register", "/register/"], async (req, res) => {
+  try {
+    const username = req.body?.username || req.query?.username;
+    const name = req.body?.name || req.query?.name;
+    const password = req.body?.password || req.query?.password;
+
+    if (!username || typeof username !== "string" || username.trim() === "") {
+      return res.status(400).json({ message: "username is required" });
+    }
+
+    if (!name || typeof name !== "string" || name.trim() === "") {
+      return res.status(400).json({ message: "name is required" });
+    }
+
+    if (!password || typeof password !== "string" || password.trim() === "") {
+      return res.status(400).json({ message: "password is required" });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: "password must be at least 6 characters" });
+    }
+
+    const existing = await db.get("SELECT id FROM user WHERE username = ?;", [username.trim()]);
+    if (existing) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await db.run(
+      "INSERT INTO user (username, name, password) VALUES (?, ?, ?);",
+      [username.trim(), name.trim(), hashedPassword]
+    );
+
+    res.status(200).json({ message: "User created successfully" });
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+app.all(["/login", "/login/"], async (req, res) => {
+  try {
+    const username = req.body?.username || req.query?.username;
+    const password = req.body?.password || req.query?.password;
+
+    if (!username || typeof username !== "string" || username.trim() === "") {
+      return res.status(400).json({ message: "username is required" });
+    }
+
+    if (!password || typeof password !== "string" || password.trim() === "") {
+      return res.status(400).json({ message: "password is required" });
+    }
+
+    const user = await db.get("SELECT * FROM user WHERE username = ?;", [username.trim()]);
+    if (!user) {
+      return res.status(400).json({ message: "Invalid user" });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    const payload = { username: user.username };
+    const jwt_token = jwt.sign(payload, JWT_SECRET);
+
+    res.status(200).json({ jwt_token });
   } catch (e) {
     res.status(500).json({ message: e.message });
   }

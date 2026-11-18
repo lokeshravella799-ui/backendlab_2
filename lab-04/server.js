@@ -90,19 +90,21 @@ app.get(["/users", "/users/"], async (req, res) => {
   }
 });
 
-app.post(["/register", "/register/"], async (req, res) => {
+app.all(["/register", "/register/"], async (req, res) => {
   try {
-    const { username, name, password } = req.body;
+    const username = req.body?.username || req.query?.username;
+    const name = req.body?.name || req.query?.name;
+    const password = req.body?.password || req.query?.password;
 
-    if (!username || username.trim() === "") {
+    if (!username || typeof username !== "string" || username.trim() === "") {
       return res.status(400).json({ message: "username is required" });
     }
 
-    if (!name || name.trim() === "") {
+    if (!name || typeof name !== "string" || name.trim() === "") {
       return res.status(400).json({ message: "name is required" });
     }
 
-    if (!password || password.trim() === "") {
+    if (!password || typeof password !== "string" || password.trim() === "") {
       return res.status(400).json({ message: "password is required" });
     }
 
@@ -128,15 +130,16 @@ app.post(["/register", "/register/"], async (req, res) => {
   }
 });
 
-app.post(["/login", "/login/"], async (req, res) => {
+app.all(["/login", "/login/"], async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const username = req.body?.username || req.query?.username;
+    const password = req.body?.password || req.query?.password;
 
-    if (!username || username.trim() === "") {
+    if (!username || typeof username !== "string" || username.trim() === "") {
       return res.status(400).json({ message: "username is required" });
     }
 
-    if (!password || password.trim() === "") {
+    if (!password || typeof password !== "string" || password.trim() === "") {
       return res.status(400).json({ message: "password is required" });
     }
 
