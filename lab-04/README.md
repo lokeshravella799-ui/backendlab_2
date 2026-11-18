@@ -77,7 +77,7 @@ Add user registration and login with hashed passwords and JWT tokens. Users can 
 3. **Configure Environment:**
    Create a `.env` file from `.env.example`:
    ```env
-   PORT=3000
+   PORT=8000
    JWT_SECRET=my_secret_key_lab4
    ```
 
@@ -91,7 +91,7 @@ Add user registration and login with hashed passwords and JWT tokens. Users can 
    npm run dev
    ```
 
-6. **Local Server URL:** [http://localhost:3000](http://localhost:3000)
+6. **Local Server URL:** [http://localhost:8000](http://localhost:8000)
 
 ---
 

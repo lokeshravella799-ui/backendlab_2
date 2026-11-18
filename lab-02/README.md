@@ -86,7 +86,7 @@ npm start
 ### Expected Terminal Output on Startup:
 ```text
 Database connected successfully
-Server running at http://localhost:3000
+Server running at http://localhost:8000
 ```
 
 ---
@@ -183,7 +183,7 @@ Content-Type: application/json
 
 ### 1. Root Check
 - **Method:** `GET`
-- **URL:** `http://localhost:3000/`
+- **URL:** `http://localhost:8000/`
 - **Status:** `200 OK`
 - **Response:**
   ```json
@@ -194,13 +194,13 @@ Content-Type: application/json
 
 ### 2. GET All Books
 - **Method:** `GET`
-- **URL:** `http://localhost:3000/books/`
+- **URL:** `http://localhost:8000/books/`
 - **Status:** `200 OK`
 - **Response:** Array of all book objects.
 
 ### 3. GET One Book
 - **Method:** `GET`
-- **URL:** `http://localhost:3000/books/1/`
+- **URL:** `http://localhost:8000/books/1/`
 - **Status:** `200 OK`
 - **Response:**
   ```json
@@ -215,7 +215,7 @@ Content-Type: application/json
 
 ### 4. Book Not Found (404 Case)
 - **Method:** `GET`
-- **URL:** `http://localhost:3000/books/999/`
+- **URL:** `http://localhost:8000/books/999/`
 - **Status:** `404 Not Found`
 - **Response:**
   ```json
@@ -226,7 +226,7 @@ Content-Type: application/json
 
 ### 5. POST (Add Book)
 - **Method:** `POST`
-- **URL:** `http://localhost:3000/books/`
+- **URL:** `http://localhost:8000/books/`
 - **Request Body (raw JSON):**
   ```json
   {
@@ -250,7 +250,7 @@ Content-Type: application/json
 
 ### 6. PUT (Update Book)
 - **Method:** `PUT`
-- **URL:** `http://localhost:3000/books/1/`
+- **URL:** `http://localhost:8000/books/1/`
 - **Request Body (raw JSON):**
   ```json
   {
@@ -274,7 +274,7 @@ Content-Type: application/json
 
 ### 7. DELETE Book
 - **Method:** `DELETE`
-- **URL:** `http://localhost:3000/books/1/`
+- **URL:** `http://localhost:8000/books/1/`
 - **Status:** `200 OK`
 - **Response:**
   ```json
@@ -319,27 +319,27 @@ Because SQLite stores data in a single local disk file (`books.db`), cloud platf
 ![Server Running](screenshots/server-running.png)
 
 ### GET All Books
-*(TODO: Capture Postman `GET http://localhost:3000/books/`)*  
+*(TODO: Capture Postman `GET http://localhost:8000/books/`)*  
 ![GET All Books](screenshots/get-all-books.png)
 
 ### GET One Book
-*(TODO: Capture Postman `GET http://localhost:3000/books/1/`)*  
+*(TODO: Capture Postman `GET http://localhost:8000/books/1/`)*  
 ![GET One Book](screenshots/get-one-book.png)
 
 ### Book Not Found
-*(TODO: Capture Postman `GET http://localhost:3000/books/999/` with 404)*  
+*(TODO: Capture Postman `GET http://localhost:8000/books/999/` with 404)*  
 ![Book Not Found](screenshots/book-not-found.png)
 
 ### POST Book
-*(TODO: Capture Postman `POST http://localhost:3000/books/` with 201 Created)*  
+*(TODO: Capture Postman `POST http://localhost:8000/books/` with 201 Created)*  
 ![POST Book](screenshots/post-book.png)
 
 ### PUT Book
-*(TODO: Capture Postman `PUT http://localhost:3000/books/1/` with 200 OK)*  
+*(TODO: Capture Postman `PUT http://localhost:8000/books/1/` with 200 OK)*  
 ![PUT Book](screenshots/put-book.png)
 
 ### DELETE Book
-*(TODO: Capture Postman `DELETE http://localhost:3000/books/1/`)*  
+*(TODO: Capture Postman `DELETE http://localhost:8000/books/1/`)*  
 ![DELETE Book](screenshots/delete-book.png)
 
 ### SQLite Database
@@ -392,7 +392,7 @@ Because SQLite stores data in a single local disk file (`books.db`), cloud platf
 **Answer:** `nodemon` is a developer tool that watches project files for changes and automatically restarts the Node.js server, saving time during development.
 
 ### 14. Why use process.env.PORT?
-**Answer:** Cloud platforms like Render assign a dynamic port at runtime via the `PORT` environment variable. `process.env.PORT || 3000` enables the application to run smoothly both on cloud hosts and locally on port 3000.
+**Answer:** Cloud platforms like Render assign a dynamic port at runtime via the `PORT` environment variable. `process.env.PORT || 8000` enables the application to run smoothly both on cloud hosts and locally on port 8000.
 
 ### 15. What happens when a book does not exist?
 **Answer:** The query `SELECT * FROM book WHERE id = ?;` returns `undefined`. The route checks if `!book` and sends an HTTP `404 Not Found` response with `{ "error": "Book not found" }`.

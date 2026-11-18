@@ -14,7 +14,7 @@ let db = null;
 
 const JWT_SECRET = "my_secret_key_lab4";
 
-const initializeDBAndServer = async (port = process.env.PORT || 3000) => {
+const initializeDBAndServer = async (port = process.env.PORT || 8000) => {
   try {
     db = await open({
       filename: dbPath,

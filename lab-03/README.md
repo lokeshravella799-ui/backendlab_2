@@ -78,7 +78,7 @@ The asynchronous initialization routine `initializeDBAndServer()` executes at st
 1. Connects to `books.db` using the `open()` method from `sqlite` and the `sqlite3.Database` driver.
 2. Creates the `book` table using `CREATE TABLE IF NOT EXISTS` if not already present.
 3. Automatically seeds 15 realistic book records if the total record count is below 15, ensuring testing data for search, pagination, and sorting.
-4. Binds the Express server to `process.env.PORT || 3000`.
+4. Binds the Express server to `process.env.PORT || 8000`.
 5. Attaches an event listener to gracefully capture and report `EADDRINUSE` port conflict errors.
 
 ---
@@ -108,7 +108,7 @@ The asynchronous initialization routine `initializeDBAndServer()` executes at st
    Create a `.env` file from `.env.example` if a custom port is required:
 
    ```env
-   PORT=3000
+   PORT=8000
    ```
 
 4. **Start the server (Production):**
@@ -123,7 +123,7 @@ The asynchronous initialization routine `initializeDBAndServer()` executes at st
    npm run dev
    ```
 
-6. **Local Server URL:** [http://localhost:3000](http://localhost:3000)
+6. **Local Server URL:** [http://localhost:8000](http://localhost:8000)
 
 ---
 
