@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 const bcrypt = require("bcrypt");
@@ -29,6 +30,28 @@ const initializeDBAndServer = async (port = process.env.PORT || 3000) => {
       );
     `);
 
+    const count = await db.get("SELECT COUNT(*) AS count FROM user;");
+    if (count.count === 0) {
+      const sampleFile = path.join(__dirname, "sample-users.json");
+      let usersToSeed = [];
+      if (fs.existsSync(sampleFile)) {
+        usersToSeed = JSON.parse(fs.readFileSync(sampleFile, "utf-8"));
+      } else {
+        usersToSeed = [
+          { username: "ravella_lokesh", name: "Ravella Lokesh", password: "lokesh@password123" },
+          { username: "john_doe", name: "John Doe", password: "password123" }
+        ];
+      }
+
+      for (const u of usersToSeed) {
+        const hashed = await bcrypt.hash(u.password, 10);
+        await db.run(
+          "INSERT INTO user (username, name, password) VALUES (?, ?, ?);",
+          [u.username, u.name, hashed]
+        );
+      }
+    }
+
     const server = app.listen(port, () => {
       console.log(`Server running at http://localhost:${port}`);
     });
@@ -56,6 +79,15 @@ app.get("/", (req, res) => {
     student: "Ravella Lokesh (252U1R1217)",
     section: "AIDE-2B",
   });
+});
+
+app.get(["/users", "/users/"], async (req, res) => {
+  try {
+    const users = await db.all("SELECT id, username, name FROM user;");
+    res.json(users);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
 });
 
 app.post(["/register", "/register/"], async (req, res) => {

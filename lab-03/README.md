@@ -52,25 +52,22 @@ Build a production-ready Node.js and Express RESTful API with SQLite database in
 | `price`  | INTEGER NOT NULL                  | Price in Indian Rupees (INR)    |
 | `pages`  | INTEGER NOT NULL                  | Total page count                |
 
-### Sample Data (15 Books)
+### Sample Data (12 Books)
 
-| ID  | Title                                              | Author                    | Price (₹) | Pages |
-| --- | -------------------------------------------------- | ------------------------- | --------- | ----- |
-| 1   | The Pragmatic Programmer                           | David Thomas, Andrew Hunt | 750       | 352   |
-| 2   | Clean Code                                         | Robert C. Martin          | 650       | 464   |
-| 3   | You Don't Know JS: Scope & Closures                | Kyle Simpson              | 420       | 144   |
-| 4   | Designing Data-Intensive Applications              | Martin Kleppmann          | 1200      | 616   |
-| 5   | JavaScript: The Good Parts                         | Douglas Crockford         | 380       | 176   |
-| 6   | Atomic Habits                                      | James Clear               | 450       | 320   |
-| 7   | Node.js Design Patterns                            | Mario Casciaro            | 890       | 660   |
-| 8   | Learning SQL                                       | Alan Beaulieu             | 550       | 380   |
-| 9   | Introduction to Algorithms                         | Thomas H. Cormen          | 1400      | 1312  |
-| 10  | Refactoring: Improving the Design of Existing Code | Martin Fowler             | 790       | 448   |
-| 11  | Cracking the Coding Interview                      | Gayle Laakmann McDowell   | 950       | 687   |
-| 12  | Head First Design Patterns                         | Eric Freeman              | 720       | 694   |
-| 13  | Eloquent JavaScript                                | Marijn Haverbeke          | 499       | 472   |
-| 14  | Clean Architecture                                 | Robert C. Martin          | 680       | 432   |
-| 15  | Database System Concepts                           | Abraham Silberschatz      | 1150      | 1376  |
+| ID  | Title                    | Author               | Price (₹) | Pages |
+| --- | ------------------------ | -------------------- | --------- | ----- |
+| 1   | The Alchemist            | Paulo Coelho         | 399       | 208   |
+| 2   | Atomic Habits            | James Clear          | 499       | 320   |
+| 3   | To Kill a Mockingbird    | Harper Lee           | 450       | 281   |
+| 4   | 1984                     | George Orwell        | 350       | 328   |
+| 5   | The Great Gatsby         | F. Scott Fitzgerald  | 299       | 180   |
+| 6   | Pride and Prejudice      | Jane Austen          | 250       | 279   |
+| 7   | The Hobbit               | J.R.R. Tolkien       | 599       | 310   |
+| 8   | Rich Dad Poor Dad        | Robert Kiyosaki      | 420       | 336   |
+| 9   | Clean Code               | Robert C. Martin     | 850       | 464   |
+| 10  | The Pragmatic Programmer | Andrew Hunt          | 799       | 352   |
+| 11  | Design Patterns          | Erich Gamma          | 920       | 395   |
+| 12  | Refactoring              | Martin Fowler        | 680       | 448   |
 
 ---
 
