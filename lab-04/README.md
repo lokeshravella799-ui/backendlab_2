@@ -1,7 +1,6 @@
 # Lab 4: Registration, Login and JWT
 
-> **🔗 Live Deployment URL:** [https://backendlab-2-lab-03.onrender.com](https://backendlab-2-lab-03.onrender.com)  
-> *(Also accessible via dedicated service `https://backendlab-2-lab-04.onrender.com` once provisioned)*
+> **🔗 Live Deployment URL:** [https://backend-02-lab-04.onrender.com](https://backend-02-lab-04.onrender.com)
 
 ---
 
@@ -100,9 +99,10 @@ Add user registration and login with hashed passwords and JWT tokens. Users can 
 
 | Method | Path | Live URL | Description | Status Code |
 |:---|:---|:---|:---|:---|
-| `GET` | `/` | [Open Live Link](https://backendlab-2-lab-04.onrender.com/) | API info, student details | `200 OK` |
-| `POST` | `/register/` | [API Endpoint](https://backendlab-2-lab-04.onrender.com/register/) | Register a new user (hashes password, stores in DB) | `200 OK` / `400 Bad Request` |
-| `POST` | `/login/` | [API Endpoint](https://backendlab-2-lab-04.onrender.com/login/) | Login and receive a JWT token | `200 OK` / `400 Bad Request` |
+| `GET` | `/` | [Open Live Link](https://backend-02-lab-04.onrender.com/) | API info, student details | `200 OK` |
+| `GET` | `/users/` | [Open Users List](https://backend-02-lab-04.onrender.com/users/) | View all registered users (id, username, name) | `200 OK` |
+| `POST` | `/register/` | [API Endpoint](https://backend-02-lab-04.onrender.com/register/) | Register a new user (hashes password, stores in DB) | `200 OK` / `400 Bad Request` |
+| `POST` | `/login/` | [API Endpoint](https://backend-02-lab-04.onrender.com/login/) | Login and receive a JWT token | `200 OK` / `400 Bad Request` |
 
 ---
 
@@ -222,34 +222,34 @@ The `10` is the salt rounds — higher means more secure but slower. `10` is the
 ## 📸 Screenshots
 
 ### 1. POST Register — New User (200 OK)
-- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/register/?username=new_user_101&name=New+User&password=secure123](https://backendlab-2-lab-03.onrender.com/register/?username=new_user_101&name=New+User&password=secure123)
+- **Render Live URL:** [https://backend-02-lab-04.onrender.com/register/?username=new_user_101&name=New+User&password=secure123](https://backend-02-lab-04.onrender.com/register/?username=new_user_101&name=New+User&password=secure123)
 - **Expected HTTP Status:** `200 OK`
 
-[![Register Success](screenshots/01-register-success.png)](https://backendlab-2-lab-03.onrender.com/register/?username=new_user_101&name=New+User&password=secure123)
+[![Register Success](screenshots/01-register-success.png)](https://backend-02-lab-04.onrender.com/register/?username=new_user_101&name=New+User&password=secure123)
 
 ### 2. POST Register — Duplicate Username (400 Bad Request)
-- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/register/?username=ravella_lokesh&name=Ravella+Lokesh&password=lokesh@password123](https://backendlab-2-lab-03.onrender.com/register/?username=ravella_lokesh&name=Ravella+Lokesh&password=lokesh@password123)
+- **Render Live URL:** [https://backend-02-lab-04.onrender.com/register/?username=ravella_lokesh&name=Ravella+Lokesh&password=lokesh@password123](https://backend-02-lab-04.onrender.com/register/?username=ravella_lokesh&name=Ravella+Lokesh&password=lokesh@password123)
 - **Expected HTTP Status:** `400 Bad Request`
 
-[![Register Duplicate](screenshots/02-register-duplicate.png)](https://backendlab-2-lab-03.onrender.com/register/?username=ravella_lokesh&name=Ravella+Lokesh&password=lokesh@password123)
+[![Register Duplicate](screenshots/02-register-duplicate.png)](https://backend-02-lab-04.onrender.com/register/?username=ravella_lokesh&name=Ravella+Lokesh&password=lokesh@password123)
 
 ### 3. POST Register — Missing Password Field (400 Bad Request)
-- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/register/?username=new_user&name=New+User](https://backendlab-2-lab-03.onrender.com/register/?username=new_user&name=New+User)
+- **Render Live URL:** [https://backend-02-lab-04.onrender.com/register/?username=new_user&name=New+User](https://backend-02-lab-04.onrender.com/register/?username=new_user&name=New+User)
 - **Expected HTTP Status:** `400 Bad Request`
 
-[![Register Missing Fields](screenshots/03-register-missing-fields.png)](https://backendlab-2-lab-03.onrender.com/register/?username=new_user&name=New+User)
+[![Register Missing Fields](screenshots/03-register-missing-fields.png)](https://backend-02-lab-04.onrender.com/register/?username=new_user&name=New+User)
 
 ### 4. POST Register — Short Password (400 Bad Request)
-- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/register/?username=test_user&name=Test+User&password=abc](https://backendlab-2-lab-03.onrender.com/register/?username=test_user&name=Test+User&password=abc)
+- **Render Live URL:** [https://backend-02-lab-04.onrender.com/register/?username=test_user&name=Test+User&password=abc](https://backend-02-lab-04.onrender.com/register/?username=test_user&name=Test+User&password=abc)
 - **Expected HTTP Status:** `400 Bad Request`
 
-[![Register Short Password](screenshots/04-register-short-password.png)](https://backendlab-2-lab-03.onrender.com/register/?username=test_user&name=Test+User&password=abc)
+[![Register Short Password](screenshots/04-register-short-password.png)](https://backend-02-lab-04.onrender.com/register/?username=test_user&name=Test+User&password=abc)
 
 ### 5. POST Login — Valid Credentials (200 OK + JWT Token)
-- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/login/?username=ravella_lokesh&password=lokesh@password123](https://backendlab-2-lab-03.onrender.com/login/?username=ravella_lokesh&password=lokesh@password123)
+- **Render Live URL:** [https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=lokesh@password123](https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=lokesh@password123)
 - **Expected HTTP Status:** `200 OK`
 
-[![Login Success](screenshots/05-login-success.png)](https://backendlab-2-lab-03.onrender.com/login/?username=ravella_lokesh&password=lokesh@password123)
+[![Login Success](screenshots/05-login-success.png)](https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=lokesh@password123)
 
 ### 6. JWT Token Decoded at jwt.io
 - Paste the token from Login response into [https://jwt.io](https://jwt.io) to see Header, Payload and Signature
@@ -257,16 +257,16 @@ The `10` is the salt rounds — higher means more secure but slower. `10` is the
 ![JWT Decoded](screenshots/06-jwt-decoded.png)
 
 ### 7. POST Login — Invalid Username (400 Bad Request)
-- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/login/?username=unknown_user&password=somepassword](https://backendlab-2-lab-03.onrender.com/login/?username=unknown_user&password=somepassword)
+- **Render Live URL:** [https://backend-02-lab-04.onrender.com/login/?username=unknown_user&password=somepassword](https://backend-02-lab-04.onrender.com/login/?username=unknown_user&password=somepassword)
 - **Expected HTTP Status:** `400 Bad Request`
 
-[![Login Invalid User](screenshots/07-login-invalid-user.png)](https://backendlab-2-lab-03.onrender.com/login/?username=unknown_user&password=somepassword)
+[![Login Invalid User](screenshots/07-login-invalid-user.png)](https://backend-02-lab-04.onrender.com/login/?username=unknown_user&password=somepassword)
 
 ### 8. POST Login — Wrong Password (400 Bad Request)
-- **Render Live URL:** [https://backendlab-2-lab-03.onrender.com/login/?username=ravella_lokesh&password=wrongpassword](https://backendlab-2-lab-03.onrender.com/login/?username=ravella_lokesh&password=wrongpassword)
+- **Render Live URL:** [https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=wrongpassword](https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=wrongpassword)
 - **Expected HTTP Status:** `400 Bad Request`
 
-[![Login Wrong Password](screenshots/08-login-wrong-password.png)](https://backendlab-2-lab-03.onrender.com/login/?username=ravella_lokesh&password=wrongpassword)
+[![Login Wrong Password](screenshots/08-login-wrong-password.png)](https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=wrongpassword)
 
 ---
 
@@ -280,15 +280,14 @@ The `10` is the salt rounds — higher means more secure but slower. `10` is the
 
 | Setting | Value |
 |---------|-------|
-| **Name** | `backendlab-2-lab-04` |
-| **Root Directory** | *(leave blank — uses root package.json)* |
+| **Name** | `backend-02-lab-04` |
+| **Root Directory** | `lab-04` |
 | **Runtime** | `Node` |
 | **Build Command** | `npm install` |
-| **Start Command** | `node lab-04/server.js` |
+| **Start Command** | `node server.js` |
 | **Environment Variable** | `NODE_VERSION: 20.18.0` |
 
-4. Click **Deploy** and wait ~2–3 minutes.
-5. Verify at [https://backendlab-2-lab-04.onrender.com/](https://backendlab-2-lab-04.onrender.com/)
+4. Live URL: [https://backend-02-lab-04.onrender.com/](https://backend-02-lab-04.onrender.com/)
 
 ---
 

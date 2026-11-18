@@ -18,7 +18,7 @@ services:
         value: production
 
   - type: web
-    name: backendlab-2-lab-04
+    name: backend-02-lab-04
     runtime: node
     buildCommand: npm install
     startCommand: node lab-04/server.js
