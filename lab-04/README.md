@@ -225,48 +225,48 @@ The `10` is the salt rounds — higher means more secure but slower. `10` is the
 - **Render Live URL:** [https://backend-02-lab-04.onrender.com/register/?username=new_user_101&name=New+User&password=secure123](https://backend-02-lab-04.onrender.com/register/?username=new_user_101&name=New+User&password=secure123)
 - **Expected HTTP Status:** `200 OK`
 
-[![Register Success](screenshots/01-register-success.png)](https://backend-02-lab-04.onrender.com/register/?username=new_user_101&name=New+User&password=secure123)
+[![Register Success](screenshots/4.1.png)](https://backend-02-lab-04.onrender.com/register/?username=new_user_101&name=New+User&password=secure123)
 
 ### 2. POST Register — Duplicate Username (400 Bad Request)
 - **Render Live URL:** [https://backend-02-lab-04.onrender.com/register/?username=ravella_lokesh&name=Ravella+Lokesh&password=lokesh@password123](https://backend-02-lab-04.onrender.com/register/?username=ravella_lokesh&name=Ravella+Lokesh&password=lokesh@password123)
 - **Expected HTTP Status:** `400 Bad Request`
 
-[![Register Duplicate](screenshots/02-register-duplicate.png)](https://backend-02-lab-04.onrender.com/register/?username=ravella_lokesh&name=Ravella+Lokesh&password=lokesh@password123)
+[![Register Duplicate](screenshots/4.2.png)](https://backend-02-lab-04.onrender.com/register/?username=ravella_lokesh&name=Ravella+Lokesh&password=lokesh@password123)
 
 ### 3. POST Register — Missing Password Field (400 Bad Request)
 - **Render Live URL:** [https://backend-02-lab-04.onrender.com/register/?username=new_user&name=New+User](https://backend-02-lab-04.onrender.com/register/?username=new_user&name=New+User)
 - **Expected HTTP Status:** `400 Bad Request`
 
-[![Register Missing Fields](screenshots/03-register-missing-fields.png)](https://backend-02-lab-04.onrender.com/register/?username=new_user&name=New+User)
+[![Register Missing Fields](screenshots/4.3.png)](https://backend-02-lab-04.onrender.com/register/?username=new_user&name=New+User)
 
 ### 4. POST Register — Short Password (400 Bad Request)
 - **Render Live URL:** [https://backend-02-lab-04.onrender.com/register/?username=test_user&name=Test+User&password=abc](https://backend-02-lab-04.onrender.com/register/?username=test_user&name=Test+User&password=abc)
 - **Expected HTTP Status:** `400 Bad Request`
 
-[![Register Short Password](screenshots/04-register-short-password.png)](https://backend-02-lab-04.onrender.com/register/?username=test_user&name=Test+User&password=abc)
+[![Register Short Password](screenshots/4.4.png)](https://backend-02-lab-04.onrender.com/register/?username=test_user&name=Test+User&password=abc)
 
 ### 5. POST Login — Valid Credentials (200 OK + JWT Token)
 - **Render Live URL:** [https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=lokesh@password123](https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=lokesh@password123)
 - **Expected HTTP Status:** `200 OK`
 
-[![Login Success](screenshots/05-login-success.png)](https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=lokesh@password123)
+[![Login Success](screenshots/4.5.png)](https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=lokesh@password123)
 
 ### 6. JWT Token Decoded at jwt.io
 - Paste the token from Login response into [https://jwt.io](https://jwt.io) to see Header, Payload and Signature
 
-![JWT Decoded](screenshots/06-jwt-decoded.png)
+![JWT Decoded](screenshots/4.6.png)
 
 ### 7. POST Login — Invalid Username (400 Bad Request)
 - **Render Live URL:** [https://backend-02-lab-04.onrender.com/login/?username=unknown_user&password=somepassword](https://backend-02-lab-04.onrender.com/login/?username=unknown_user&password=somepassword)
 - **Expected HTTP Status:** `400 Bad Request`
 
-[![Login Invalid User](screenshots/07-login-invalid-user.png)](https://backend-02-lab-04.onrender.com/login/?username=unknown_user&password=somepassword)
+[![Login Invalid User](screenshots/4.7.png)](https://backend-02-lab-04.onrender.com/login/?username=unknown_user&password=somepassword)
 
 ### 8. POST Login — Wrong Password (400 Bad Request)
 - **Render Live URL:** [https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=wrongpassword](https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=wrongpassword)
 - **Expected HTTP Status:** `400 Bad Request`
 
-[![Login Wrong Password](screenshots/08-login-wrong-password.png)](https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=wrongpassword)
+[![Login Wrong Password](screenshots/4.8.png)](https://backend-02-lab-04.onrender.com/login/?username=ravella_lokesh&password=wrongpassword)
 
 ---
 
