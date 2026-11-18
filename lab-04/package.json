@@ -1,0 +1,23 @@
+{
+  "name": "lab-04",
+  "version": "1.0.0",
+  "description": "Lab 4: User Registration, Login and JWT Authentication - Backend Development Fundamentals",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["express", "sqlite", "sqlite3", "bcrypt", "jsonwebtoken", "jwt", "authentication"],
+  "author": "Ravella Lokesh (252U1R1217)",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

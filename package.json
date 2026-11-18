@@ -7,6 +7,7 @@
     "dev": "nodemon lab-03/server.js",
     "lab-02": "node lab-02/server.js",
     "lab-03": "node lab-03/server.js",
+    "lab-04": "node lab-04/server.js",
     "test:lab-03": "node lab-03/test-api.js"
   },
   "author": "Ravella Lokesh (252U1R1217)",
